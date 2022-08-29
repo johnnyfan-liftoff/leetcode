@@ -1,0 +1,93 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'bfs' function below.
+#
+# The function is expected to return an INTEGER_ARRAY.
+# The function accepts following parameters:
+#  1. INTEGER n
+#  2. INTEGER m
+#  3. 2D_INTEGER_ARRAY edges
+#  4. INTEGER s
+#
+
+def dfs(n, m, edges, s):
+    # Write your code here
+    undir = [[y, x] for x, y in edges] + edges
+    uuu = [[int(x), int(y)] for x, y in [i.split(',') for i in set(list(map(lambda x: str(x[0]) + ',' + str(x[1]), undir)))]]
+    res = [-1 for i in range (n)]
+    visited = [False for i in range (n)]
+    helper (n, m, uuu, s, res, 0, visited)
+    del res[s-1]
+    return(res)
+        
+def helper(n, m, edges, s, res, level, visited):
+    if visited[s-1]:
+       return
+    visited[ s - 1] = True  
+    if level != 0:
+      res[s - 1] = 6 * level
+    related = list(filter (lambda x: x[0] == s, edges))
+    for x in related: 
+        helper(n, m, edges, x[1], res, level + 1, visited)
+
+def bfs(n, m, edges, s):
+  from collections import deque
+
+  graph = {}
+  for i in range(1, n+1):
+    graph[i] = set()
+  for f, t in edges:
+    graph[f].add(t)
+    graph[t].add(f)
+
+  res = [-1 for i in range (n + 1)]
+  visited = {}
+  
+  q = deque()
+  q.append([s, 0])
+  while q:
+    elem, level = q.popleft()
+    if elem not in visited:
+      visited[elem] = "1"
+      if level != 0:
+        res[elem] = level
+    for e in  graph[elem]:
+      if e not in visited:
+        q.append([e, level + 6])
+  
+  del res[s]
+  del res[0]
+  return res
+
+if __name__ == '__main__':
+    # fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    q = int(input().strip())
+
+    for q_itr in range(q):
+        first_multiple_input = input().rstrip().split()
+
+        n = int(first_multiple_input[0])
+
+        m = int(first_multiple_input[1])
+
+        edges = []
+
+        for _ in range(m):
+            edges.append(list(map(int, input().rstrip().split())))
+
+        s = int(input().strip())
+
+        result = bfs(n, m, edges, s)
+        print ("\n----------")
+        print(' '.join(map(str, result)))
+        print('\n')
+
+  
