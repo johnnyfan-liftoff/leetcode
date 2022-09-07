@@ -6,9 +6,13 @@ class ListNode(object):
 
 def print_link(head):
   p = head
+  count = 0
   while p:
     print(p.val, end = '')
     p = p.next
+    count += 1
+    if count == 20:
+      break
   print("")
 
 def reorderList(head):
@@ -29,6 +33,7 @@ def reorderList(head):
         break
     
     h2 = h1.next
+    h1.next = None
     h1 = head
 
     print_link(h2)
@@ -46,7 +51,7 @@ def reorderList(head):
 
     print_link(p2)
 
-    while p1 and p2:
+    while p2:
       p1s = p1
       p2s = p2
 
@@ -56,12 +61,12 @@ def reorderList(head):
       p2s.next = p1s.next
       p1s.next = p2s
 
-    return p1
+    return head
 
 
     
-
-l5 = ListNode(5, None)
+l6 = ListNode(6, None)
+l5 = ListNode(5, l6)
 l4 = ListNode(4, l5)
 l3 = ListNode(3, l4)
 l2 = ListNode(2, l3)
